@@ -1,4 +1,4 @@
-import 'package:delichi/pages/register.dart';
+import 'package:delichi/pages/register_page.dart';
 import 'package:delichi/widgets/appbar_go_back.dart';
 import 'package:flutter/material.dart';
 

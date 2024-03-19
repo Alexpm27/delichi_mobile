@@ -1,4 +1,4 @@
-import 'package:delichi/cards/restaurant.dart';
+import 'package:delichi/cards/restaurant_search.dart';
 import 'package:flutter/material.dart';
 
 class SavedPage extends StatefulWidget {

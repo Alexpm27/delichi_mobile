@@ -1,5 +1,5 @@
-import 'package:delichi/pages/login.dart';
-import 'package:delichi/pages/profile.dart';
+import 'package:delichi/pages/login_page.dart';
+import 'package:delichi/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class AppBarHome extends StatelessWidget implements PreferredSizeWidget {

@@ -1,7 +1,7 @@
-import 'package:delichi/pages/home.dart';
-import 'package:delichi/pages/reservation.dart';
-import 'package:delichi/pages/saved.dart';
-import 'package:delichi/pages/search.dart';
+import 'package:delichi/pages/home_page.dart';
+import 'package:delichi/pages/reservation_page.dart';
+import 'package:delichi/pages/saved_page.dart';
+import 'package:delichi/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
