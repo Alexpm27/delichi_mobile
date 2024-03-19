@@ -1,3 +1,4 @@
+import 'package:delichi/pages/restaurant_page.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantHomeCard extends StatelessWidget {
@@ -16,84 +17,95 @@ class RestaurantHomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 190,
-      margin: const EdgeInsets.only(right: 10),
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Imagen del restaurante
-            Expanded(
-              flex: 3,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(8),
-                ),
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        // Navega a la pantalla del restaurante cuando se hace clic en la tarjeta
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  RestaurantPage(),
+          ),
+        );
+      },
+      child: Container(
+        width: 190,
+        margin: const EdgeInsets.only(right: 10),
+        child: Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Imagen del restaurante
+              Expanded(
+                flex: 3,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(8),
+                  ),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            // Detalles del restaurante
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+              // Detalles del restaurante
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    Text(
-                      cuisine,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                      Text(
+                        cuisine,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.orange,
-                              size: 15,
-                            ),
-                            Text(
-                              '$rating',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Colors.orange,
+                                size: 15,
                               ),
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.bookmark_border, color: Colors.orange,),
-                          onPressed: () {
-                            // Acción al presionar el icono de guardar
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                              Text(
+                                '$rating',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.bookmark_border, color: Colors.orange,),
+                            onPressed: () {
+                              // Acción al presionar el icono de guardar
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

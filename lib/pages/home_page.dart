@@ -3,6 +3,8 @@ import 'package:delichi/cards/cousine_type.dart';
 import 'package:delichi/cards/restaurant_home.dart';
 import 'package:delichi/widgets/appbar_home.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';      // required to encode/decode json data
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -13,21 +15,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> restaurantData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRestaurantData().then((data) {
+      setState(() {
+        restaurantData = data;
+      });
+    }).catchError((error) {
+      print('Error fetching restaurant data: $error');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    return const Scaffold(
-      appBar: AppBarHome(),
+    return Scaffold(
+      appBar: const AppBarHome(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              AdvertisementList(),
-              Row(
+              const SizedBox(height: 20),
+              const AdvertisementList(),
+              const Row(
                 children: [
                   SizedBox(width: 30,),
                   Text(
@@ -39,10 +54,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              CuisineTypeList(),
-              SizedBox(height: 20),
-              Row(
+              const SizedBox(height: 10),
+              const CuisineTypeList(),
+              const SizedBox(height: 20),
+              const Row(
                 children: [
                   SizedBox(width: 5,),
                   Icon(Icons.stars, color: Colors.orange, size: 18,),
@@ -56,8 +71,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              RestaurantList(),
-              Row(
+              RestaurantList(restaurantData: restaurantData),
+              const Row(
                 children: [
                   SizedBox(width: 5,),
                   Icon(Icons.add_circle, color: Colors.orange, size: 18,),
@@ -71,44 +86,36 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              RestaurantList(),
+              RestaurantList(restaurantData: restaurantData),
             ],
           ),
         ),
-      )
+      ),
     );
+
   }
 }
 class RestaurantList extends StatelessWidget {
-  const RestaurantList({super.key});
+  final List<Map<String, dynamic>> restaurantData;
+
+  const RestaurantList({super.key, required this.restaurantData});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 270,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: const [
-          RestaurantHomeCard(
-            name: 'El rábano',
-            cuisine: 'Tacos',
-            rating: 4.5,
-            imageUrl: 'https://lbeautehomme.mx/wp-content/uploads/2023/08/SARDE-1-1536x1024.jpg',
-          ),
-          RestaurantHomeCard(
-            name: 'Las brisas',
-            cuisine: 'Chilaquiles',
-            rating: 4.0,
-            imageUrl: 'https://lbeautehomme.mx/wp-content/uploads/2023/08/SARDE-1-1536x1024.jpg',
-          ),
-          RestaurantHomeCard(
-            name: 'Las brisas',
-            cuisine: 'Pizza',
-            rating: 4.8,
-            imageUrl: 'https://lbeautehomme.mx/wp-content/uploads/2023/08/SARDE-1-1536x1024.jpg',
-          ),
-
-        ],
+        itemCount: restaurantData.length,
+        itemBuilder: (context, index) {
+          final Map<String, dynamic> restaurant = restaurantData[index];
+          return RestaurantHomeCard(
+            name: restaurant['name'],
+            cuisine: restaurant['cuisine'],
+            rating: restaurant['rating'],
+            imageUrl: restaurant['imageUrl'],
+          );
+        },
       ),
     );
   }
@@ -153,5 +160,16 @@ class CuisineTypeList extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<List<Map<String, dynamic>>> fetchRestaurantData() async {
+  final response = await http.get(Uri.parse('URL_DE_TU_API_AQUÍ'));
+  if (response.statusCode == 200) {
+    final List<Map<String, dynamic>> restaurantDataList =
+    List<Map<String, dynamic>>.from(json.decode(response.body));
+    return restaurantDataList;
+  } else {
+    throw Exception('Failed to load restaurant data');
   }
 }
